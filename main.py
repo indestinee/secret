@@ -2,6 +2,7 @@ import argparse
 from config import cfg
 from cryptor import Cryptor
 import numpy as np
+from IPython import embed
 
 def get_args():
     parser = argparse.ArgumentParser(description='Secret Manager')
@@ -21,7 +22,9 @@ def get_key():
 if __name__ == '__main__':
     args = get_args()
     key = get_key()
-    cryptor = Cryptor('cache', key=key, default='bin')
+    cryptor = Cryptor(cfg.cache, key=key, default='bin')
+    embed()
+    exit(0)
     cryptor.dump(data='123', name='x', force=True)
     data = cryptor.load(name='x')
     items = cryptor.items()
