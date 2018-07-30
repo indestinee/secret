@@ -13,6 +13,14 @@ class Cryptor(Cache):
             *args, **kwargs):
         super().__init__(path, *args, **kwargs)
         self.key, self.mode = key, mode
+        if '__key__' in self.items():
+            try:
+                key = self.load('__key__')
+            except:
+                key = ''
+            assert key == self.key, '[ERR] key error'
+        else:
+            self.dump(key, '__key__')
 
     def encrypt(self, data):
         iv = Random.new().read(AES.block_size)

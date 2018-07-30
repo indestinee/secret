@@ -1,5 +1,5 @@
 class Config:
-    cache='~/Documents/InformationStorage'
+    cache='/Users/indestinee/Documents/InformationStorage'
 
 cfg = Config()
     

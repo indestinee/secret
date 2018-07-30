@@ -3,6 +3,7 @@ from config import cfg
 from cryptor import Cryptor
 import numpy as np
 from IPython import embed
+import getpass
 
 def get_args():
     parser = argparse.ArgumentParser(description='Secret Manager')
@@ -13,7 +14,7 @@ def get_args():
 def get_key():
     while True:
         print('[WRN] you must remember the key, otherwise lose all data')
-        key = input('[I N] key: ')
+        key = getpass.getpass('[I N] key: ')
         if len(key) == 0:
             continue
         return (key * (32 // len(key) + 1))[:32]
