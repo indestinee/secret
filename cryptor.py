@@ -26,7 +26,6 @@ class Cryptor(Cache):
         iv = Random.new().read(AES.block_size)
         text = padding(pickle.dumps(data), AES.block_size)
         cryptor = AES.new(self.key, self.mode, iv) 
-        print(text)
         text = cryptor.encrypt(text)
         return iv+text
 

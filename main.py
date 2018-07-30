@@ -26,8 +26,3 @@ if __name__ == '__main__':
     cryptor = Cryptor(cfg.cache, key=key, default='bin')
     embed()
     exit(0)
-    cryptor.dump(data='123', name='x', force=True)
-    data = cryptor.load(name='x')
-    items = cryptor.items()
-    print(items)
-
