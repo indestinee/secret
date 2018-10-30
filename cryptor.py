@@ -22,6 +22,18 @@ class Cryptor(Cache):
         else:
             self.dump(key, '__key__')
 
+    def __getitem__(self, name):
+        if name in self.items():
+            return self.load(name)
+        return None
+
+    def __setitem__(self, name, data):
+        self.dump(name, data)
+
+    def remove(self, name):
+        super().remove(name)
+
+
     def encrypt(self, data):
         iv = Random.new().read(AES.block_size)
         text = padding(pickle.dumps(data), AES.block_size)
@@ -36,9 +48,9 @@ class Cryptor(Cache):
         data = cryptor.decrypt(code)
         return pickle.loads(data)
 
-    def dump(self, data, *args, **kwargs):
+    def dump(self, name, data, *args, **kwargs):
         data = self.encrypt(data)
-        super().dump(data, *args, **kwargs)
+        super().dump(name, data, *args, **kwargs)
 
     def load(self, name, *args, **kwargs):
         data = super().load(name, *args, **kwargs)
