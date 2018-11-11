@@ -3,26 +3,45 @@ from config import cfg
 from cryptor import Cryptor
 import numpy as np
 from IPython import embed
-import getpass
+from utils import *
 
 def get_args():
     parser = argparse.ArgumentParser(description='Secret Manager')
-    parser.add_argument('-p', '--path', type=str, default=cfg.cache,\
-            help='Storage path')
     return parser.parse_args()
 
-def get_key():
-    while True:
-        print('[WRN] you must remember the key, otherwise lose all data')
-        key = getpass.getpass('[I N] key: ')
-        if len(key) == 0:
+
+tables = [{
+    'name': 'information',
+    'attr': [{
+            'key': 'id',
+            'type': 'INTEGER PRIMARY KEY AUTOINCREMENT',
+        }, {
+            'key': 'name',
+            'type': 'text NOT NULL',
+        }, {
+            'key': 'data',
+            'type': 'text',
+        }],
+    }
+]
+
+def init(cryptor):
+    cryptor._db.add_tables(tables)
+
+def transfer(cryptor):
+    cryptor._db.__destroy__()
+    init(cryptor)
+    for each in cryptor.cache.items():
+        if each[:-3] == '.db' or each == '__key__':
             continue
-        return (key * (32 // len(key) + 1))[:32]
-    return None
+        cp.log(each)
+        data = cryptor.decrypt(cryptor.cache.load(each, 'bin'))
+        print(data, each)
+        cryptor.dump(data, each)
 
 if __name__ == '__main__':
     args = get_args()
-    key = get_key()
-    cryptor = Cryptor(cfg.cache, key=key, default='bin')
+    cryptor = Cryptor(cfg.cache, name=cfg.database_name, default='bin')
+
     embed()
     exit(0)
