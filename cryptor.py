@@ -17,7 +17,6 @@ class Cryptor(object):
         self.start_time = time.time()
         self._db = DataBase(path, name)
         self.key, self.mode = self.get_key(), mode
-        self.cache = Cache(path)
         self.help()
         self.display_items()
 
